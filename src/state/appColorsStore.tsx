@@ -10,6 +10,8 @@ type AppColorsType = {
   tooltipsTextColor: string;
   hoverElementBgColor: string;
   activeElementBgColor: string;
+  activeTextColor: string;
+  iconsColor: string;
 };
 
 interface AppColorsStoreType {
@@ -19,14 +21,16 @@ interface AppColorsStoreType {
 export const useAppColors = create<AppColorsStoreType>((set) => ({
   appColors: {
     mainBgColor: "#FFFFFF",
-    secondaryBgColor: "#FAFAFA",
+    secondaryBgColor: "#fcfaf8",
     iconicColor: "#E44332",
-    textColor: "#2D2D2D ",
-    secondaryTextColor: "#767676 ",
-    tooltipsBgColor: "#333333 ",
-    tooltipsTextColor: "#FFFFFF ",
-    hoverElementBgColor: "#F5F5F5 ",
-    activeElementBgColor: "#EDEDED ",
+    textColor: "#2D2D2D",
+    secondaryTextColor: "#767676",
+    tooltipsBgColor: "#333333",
+    tooltipsTextColor: "#FFFFFF",
+    hoverElementBgColor: "#F5F5F5",
+    activeElementBgColor: "#ffefe5",
+    activeTextColor: "#A81F00",
+    iconsColor: "#B0B0B0",
   },
   setAppColors: (val) => set((state) => ({ appColors: val })),
 }));
