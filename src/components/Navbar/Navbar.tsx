@@ -1,13 +1,19 @@
 import { useAppColors } from "@/state/appColorsStore";
 import { NavbarChoice } from "./NavbarChoice";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useNavbarStore } from "@/state/navbarStore";
 
 type Props = {};
 
 export function Navbar({}: Props) {
+  const { navbarWidth } = useNavbarStore();
+
   const { appColors } = useAppColors();
 
-  const [choiceActive, setChoiceActive] = useState("");
+  const navigate = useNavigate();
+
+  const [choiceActive, setChoiceActive] = useState("today");
 
   const openCloseSidebarSvg = (
     <svg
@@ -154,7 +160,7 @@ export function Navbar({}: Props) {
       </svg>
     ) : (
       <svg
-        style={{color: appColors.iconicColor}}
+        style={{ color: appColors.iconicColor }}
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -170,18 +176,28 @@ export function Navbar({}: Props) {
       </svg>
     );
 
+  const choices = [
+    {
+      choiceName: "inbox",
+      choiceSvg: inboxSvg,
+      choiceText: "Inbox",
+    },
+    {
+      choiceName: "today",
+      choiceSvg: todaySvg,
+      choiceText: "Today",
+    },
+    {
+      choiceName: "upcoming",
+      choiceSvg: upcomingSvg,
+      choiceText: "Upcoming",
+    },
+  ];
 
-  function handleInboxClick() {
-    setChoiceActive("inbox");
-  }
-
-  function handleTodayClick() {
-    setChoiceActive("today");
-  }
-
-  function handleUpcomingClick() {
-    setChoiceActive("upcoming");
-  }
+  const handleChoiceClick = (choiceName: string) => {
+    setChoiceActive(choiceName);
+    navigate(choiceName);
+  };
 
   return (
     <div
@@ -190,7 +206,7 @@ export function Navbar({}: Props) {
         backgroundColor: appColors.secondaryBgColor,
         minWidth: "210px",
         maxWidth: "420px",
-        width: "240px",
+        width: `${navbarWidth}px`,
       }}
     >
       <div className="flex items-center">
@@ -212,27 +228,16 @@ export function Navbar({}: Props) {
           Add task
         </h1>
       </div>
-      <NavbarChoice
-        className="mt-3"
-        isActive={choiceActive === "inbox"}
-        svg={inboxSvg}
-        text="Inbox"
-        handleChoiceClick={handleInboxClick}
-      />
-      <NavbarChoice
-        className=""
-        isActive={choiceActive === "today"}
-        svg={todaySvg}
-        text="Today"
-        handleChoiceClick={handleTodayClick}
-      />
-      <NavbarChoice
-        className=""
-        isActive={choiceActive === "upcoming"}
-        svg={upcomingSvg}
-        text="Upcoming"
-        handleChoiceClick={handleUpcomingClick}
-      />
+      <div className="mt-5">
+        {choices.map((choice) => (
+          <NavbarChoice
+            svg={choice.choiceSvg}
+            text={choice.choiceText}
+            isActive={choiceActive === choice.choiceName}
+            handleChoiceClick={() => handleChoiceClick(choice.choiceName)}
+          />
+        ))}
+      </div>
     </div>
   );
 }
