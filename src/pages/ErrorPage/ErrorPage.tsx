@@ -8,7 +8,7 @@ export function ErrorPage({}: Props) {
   return (
     <div className="flex flex-col items-center justify-center h-screen font-SFpro">
       <h1>404 not found</h1>
-      <button onClick={() => navigate("/")}>Go back</button>
+      <button onClick={() => navigate("/app")}>Go back</button>
     </div>
   );
 }
