@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 
-type Props = {}
+type Props = {};
 
 export function TodayTasksPage({}: Props) {
-  return (
-    <div>TodayTasksPage</div>
-  )
+
+
+
+  useEffect(() => {
+    document.title = "Today - Todoist"
+  }, [])
+
+  return <div className="">TodayTasksPage</div>;
 }
