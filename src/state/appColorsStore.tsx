@@ -12,6 +12,7 @@ type AppColorsType = {
   activeElementBgColor: string;
   activeTextColor: string;
   iconsColor: string;
+  borderColor: string;
 };
 
 interface AppColorsStoreType {
@@ -31,6 +32,7 @@ export const useAppColors = create<AppColorsStoreType>((set) => ({
     activeElementBgColor: "#ffefe5",
     activeTextColor: "#A81F00",
     iconsColor: "#B0B0B0",
+    borderColor: "#e6e6e6",
   },
   setAppColors: (val) => set((state) => ({ appColors: val })),
 }));
