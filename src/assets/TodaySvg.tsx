@@ -7,6 +7,8 @@ type Props = {
 export function TodaySvg({ activeChoice }: Props) {
   const { appColors } = useAppColors();
 
+  const date = new Date().getDate();
+
   return activeChoice !== "today" ? (
     <svg
       width="24"
@@ -26,7 +28,7 @@ export function TodaySvg({ activeChoice }: Props) {
           fontWeight="500"
         >
           <tspan x="8" y="15" text-anchor="middle">
-            31 {/* TODO CHANGING BASED ON CURR DATE */}
+            {date}
           </tspan>
         </text>
       </g>
@@ -54,7 +56,7 @@ export function TodaySvg({ activeChoice }: Props) {
         fill={appColors.tooltipsTextColor}
       >
         <tspan x="8" y="15" text-anchor="middle">
-          31
+          {date}
         </tspan>
       </text>
     </svg>
