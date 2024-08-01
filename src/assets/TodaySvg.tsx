@@ -28,7 +28,7 @@ export function TodaySvg({ activeChoice }: Props) {
           fontWeight="500"
         >
           <tspan x="8" y="15" text-anchor="middle">
-            {date}
+            {date.toString().padStart(2, "0")}
           </tspan>
         </text>
       </g>
@@ -56,7 +56,7 @@ export function TodaySvg({ activeChoice }: Props) {
         fill={appColors.tooltipsTextColor}
       >
         <tspan x="8" y="15" text-anchor="middle">
-          {date}
+          {date.toString().padStart(2, "0")}
         </tspan>
       </text>
     </svg>
