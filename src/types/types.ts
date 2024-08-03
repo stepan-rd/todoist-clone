@@ -1,6 +1,6 @@
 export type TaskType = {
   task: string;
-  priority: "P1" | "P2" | "P3" | "P4";
+  priority: string;
   dueDate: string;
   description: string;
 };
