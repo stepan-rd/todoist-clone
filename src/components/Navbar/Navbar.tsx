@@ -1,6 +1,6 @@
 import { useAppColors } from "@/state/appColorsStore";
 import { NavbarChoice } from "./NavbarChoice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNavbarStore } from "@/state/navbarStore";
 import { OpenCloseSidebarSvg } from "@/assets/OpenCloseSidebarSvg";
@@ -12,7 +12,14 @@ import { UpcomingSvg } from "@/assets/UpcomingSvg";
 type Props = {};
 
 export function Navbar({}: Props) {
-  const { navbarWidth } = useNavbarStore();
+  const {
+    navbarHidden,
+    setNavbarHidden,
+    navbarMdDevicesHidden,
+    setNavbarMdDevicesHidden,
+    showNavbarLgDevices,
+    setShowNavbarLgDevices,
+  } = useNavbarStore();
 
   const { appColors } = useAppColors();
 
@@ -43,45 +50,75 @@ export function Navbar({}: Props) {
     navigate(choiceName);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        console.log("hiding navbar bcs on md");
+        setNavbarHidden(true);
+        setNavbarMdDevicesHidden(true);
+        setShowNavbarLgDevices(true);
+      } else {
+        if (showNavbarLgDevices) {
+          setNavbarHidden(false);
+          setShowNavbarLgDevices(false)
+        }
+      }
+    };
+    // Set the initial state
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [showNavbarLgDevices]);
+
   return (
-    <div
-      className="fixed h-screen p-4"
-      style={{
-        backgroundColor: appColors.secondaryBgColor,
-        minWidth: "210px",
-        maxWidth: "420px",
-        width: `${navbarWidth}px`,
-      }}
-    >
-      <div className="flex items-center">
-        <img
-          src="https://placehold.co/20x20?text=PFP"
-          className="p-px mr-2 border-2 rounded-full"
-          style={{ borderColor: appColors.iconicColor }}
-          alt="pfpImg"
-        />
-        <h1 className="text-sm font-semibold">username</h1>
-        <OpenCloseSidebarSvg />
-      </div>
-      <div className="flex items-center mt-5 hover:cursor-pointer">
-        <AddTaskSvg />
-        <h1
-          className="text-sm font-semibold"
-          style={{ color: appColors.activeTextColor }}
-        >
-          Add task
-        </h1>
-      </div>
-      <div className="mt-5">
-        {choices.map((choice) => (
-          <NavbarChoice
-            svg={choice.choiceSvg}
-            text={choice.choiceText}
-            isActive={activeChoice === choice.choiceName}
-            handleChoiceClick={() => handleChoiceClick(choice.choiceName)}
+    <>
+      <div
+        className="fixed z-50 h-screen p-4 transition-all duration-300"
+        style={{
+          width: "210px",
+          backgroundColor: appColors.secondaryBgColor,
+          left: navbarHidden ? "-210px" : "0px",
+        }}
+      >
+        <div className="flex items-center">
+          <img
+            src="https://placehold.co/20x20?text=PFP"
+            className="p-px mr-2 border-2 rounded-full"
+            style={{ borderColor: appColors.iconicColor }}
+            alt="pfpImg"
           />
-        ))}
+          <h1 className="text-sm font-semibold">username</h1>
+          <OpenCloseSidebarSvg className="absolute right-4" />
+        </div>
+        <div className="flex items-center mt-5 hover:cursor-pointer">
+          <AddTaskSvg />
+          <h1
+            className="text-sm font-semibold"
+            style={{ color: appColors.activeTextColor }}
+          >
+            Add task
+          </h1>
+        </div>
+        <div className="mt-5">
+          {choices.map((choice) => (
+            <NavbarChoice
+              svg={choice.choiceSvg}
+              text={choice.choiceText}
+              isActive={activeChoice === choice.choiceName}
+              handleChoiceClick={() => handleChoiceClick(choice.choiceName)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+      {navbarHidden && (
+        <OpenCloseSidebarSvg className="absolute top-4 left-2" />
+      )}
+    </>
   );
 }
