@@ -13,6 +13,10 @@ type AppColorsType = {
   activeTextColor: string;
   iconsColor: string;
   borderColor: string;
+  iconicColorHover: string;
+  secondaryColorHover: string;
+  borderColorFocused: string;
+  disabledButtonBg: string;
 };
 
 interface AppColorsStoreType {
@@ -33,6 +37,10 @@ export const useAppColors = create<AppColorsStoreType>((set) => ({
     activeTextColor: "#A81F00",
     iconsColor: "#B0B0B0",
     borderColor: "#e6e6e6",
+    iconicColorHover: "#d4493b",
+    secondaryColorHover: "#e0e0e0",
+    borderColorFocused: "#b5b3b3",
+    disabledButtonBg: "#eda59e",
   },
   setAppColors: (val) => set((state) => ({ appColors: val })),
 }));
