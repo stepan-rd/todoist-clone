@@ -1,10 +1,32 @@
 import { create } from "zustand";
 
 type NavbarStoreType = {
-  navbarWidth: number;
-  setNavbarWidth: (val: number) => void;
+  navbarHidden: boolean;
+  setNavbarHidden: (val: boolean | ((prev: boolean) => boolean)) => void;
+
+  navbarMdDevicesHidden: boolean;
+  setNavbarMdDevicesHidden: (
+    val: boolean | ((prev: boolean) => boolean)
+  ) => void;
+
+  showNavbarLgDevices: boolean;
+  setShowNavbarLgDevices: (val: boolean) => void;
 };
 export const useNavbarStore = create<NavbarStoreType>((set) => ({
-  navbarWidth: 240,
-  setNavbarWidth: (val) => set((state) => ({ navbarWidth: val })),
+  navbarHidden: false,
+  setNavbarHidden: (val) =>
+    set((state) => ({
+      navbarHidden: typeof val === "function" ? val(state.navbarHidden) : val,
+    })),
+
+  navbarMdDevicesHidden: true,
+  setNavbarMdDevicesHidden: (val) =>
+    set((state) => ({
+      navbarMdDevicesHidden:
+        typeof val === "function" ? val(state.navbarMdDevicesHidden) : val,
+    })),
+
+  showNavbarLgDevices: false,
+  setShowNavbarLgDevices: (val) =>
+    set((state) => ({ showNavbarLgDevices: val })),
 }));
