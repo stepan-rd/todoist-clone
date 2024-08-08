@@ -2,13 +2,20 @@ import { TaskType } from "@/types/types";
 import { create } from "zustand";
 
 type TasksStoreType = {
-  todayTasks: TaskType[];
-  setTodayTasks: (val: TaskType[] | ((prev: TaskType[]) => TaskType[])) => void;
+  allTasks: TaskType[];
+  setAllTasks: (val: TaskType[] | ((prev: TaskType[]) => TaskType[])) => void;
+
+  currEditingTaskIndex: number | null;
+  setCurrEditingTaskIndex: (val: number | null) => void;
 };
 export const useTasksStore = create<TasksStoreType>((set) => ({
-  todayTasks: [],
-  setTodayTasks: (val) =>
+  allTasks: [],
+  setAllTasks: (val) =>
     set((state) => ({
-      todayTasks: typeof val === "function" ? val(state.todayTasks) : val,
+      allTasks: typeof val === "function" ? val(state.allTasks) : val,
     })),
+
+  currEditingTaskIndex: null,
+  setCurrEditingTaskIndex: (val) =>
+    set((state) => ({ currEditingTaskIndex: val })),
 }));

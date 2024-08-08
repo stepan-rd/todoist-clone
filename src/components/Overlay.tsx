@@ -2,10 +2,14 @@ import React from "react";
 
 type Props = {
   onClick?: () => void;
+  className?: string;
 };
 
-export function Overlay({onClick}: Props) {
+export function Overlay({ onClick, className }: Props) {
   return (
-    <div className="fixed inset-0 z-30 w-screen h-screen bg-stone-900 opacity-45" onClick={onClick}></div>
+    <div
+      className={`fixed inset-0 w-screen h-screen bg-stone-900 opacity-45 ${className}`}
+      onClick={onClick}
+    ></div>
   );
 }

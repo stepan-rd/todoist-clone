@@ -1,54 +1,53 @@
 import { RadioButton } from "@/components/RadioButton";
 import { useAppColors } from "@/state/appColorsStore";
 import { useTasksStore } from "@/state/tasksStore";
+import { useTodayPage } from "@/state/todayPageStore";
 import { TaskType } from "@/types/types";
+import { completeTask } from "@/utils/completeTask";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
   task: TaskType;
   taskIndex: number;
+  taskPositionIndex?: number;
+  handleTaskClick: (...args: any[]) => void;
 };
 
-export function TaskCard({ task, taskIndex }: Props) {
-  const navigate = useNavigate();
+export function TaskCard({ task, taskIndex, taskPositionIndex, handleTaskClick }: Props) {
 
   const { appColors } = useAppColors();
 
-  const { todayTasks, setTodayTasks } = useTasksStore();
+  const { setAllTasks, setCurrEditingTaskIndex } = useTasksStore();
 
-  function completeTodayTask(taskIndex: number) {
-    setTodayTasks((prev) => {
-      const newTodayTasks = [...prev];
-      newTodayTasks.splice(taskIndex, 1);
-      return newTodayTasks;
-    });
+  function handleCompleteTaskClick() {
+    completeTask(taskIndex, setAllTasks);
   }
 
   return (
-    <>
-      <div
-        className="relative z-30 flex hover:cursor-pointer"
-        onClick={() => navigate("/")}
-      >
-        <RadioButton
-          className="absolute z-50 top-1"
-          onClick={() => completeTodayTask(taskIndex)}
-          priority={Number(todayTasks[taskIndex].priority.slice(1)) - 1}
-        />
-        <div className="flex flex-col ml-7">
-          <h1 className="text-sm" style={{ color: appColors.textColor }}>
-            {" "}
-            {task.task}
-          </h1>
-          <h1
-            className="mt-1 text-xs"
-            style={{ color: appColors.secondaryTextColor }}
-          >
-            {task.description}
-          </h1>
+      <div>
+        <div
+          className="flex hover:cursor-pointer"
+          onClick={() => handleTaskClick(task, taskIndex, taskPositionIndex)}
+        >
+          <RadioButton
+            className=""
+            onClick={handleCompleteTaskClick}
+            priority={Number(task.priority[1])}
+          />
+          <div className="flex flex-col ml-3">
+            <h1 className="text-sm" style={{ color: appColors.textColor }}>
+              {" "}
+              {task.task}
+            </h1>
+            <h1
+              className="mt-1 text-xs"
+              style={{ color: appColors.secondaryTextColor }}
+            >
+              {task.description}
+            </h1>
+          </div>
         </div>
+        <hr className="my-4" />
       </div>
-      <hr className="my-4" />
-    </>
   );
 }

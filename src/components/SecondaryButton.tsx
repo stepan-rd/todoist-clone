@@ -5,10 +5,10 @@ type Props = {
   className?: string;
   onClick?: () => void;
   children: React.ReactNode;
-  canClick: boolean
+  disabled: boolean
 };
 
-export function SecondaryButton({ className, onClick, children, canClick }: Props) {
+export function SecondaryButton({ className, onClick, children, disabled }: Props) {
   const { appColors } = useAppColors();
 
   const [isHovered, setIsHovered] = useState(false);
@@ -20,7 +20,7 @@ export function SecondaryButton({ className, onClick, children, canClick }: Prop
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{ backgroundColor: isHovered ? appColors.secondaryColorHover : appColors.hoverElementBgColor, color: appColors.textColor }}
-      disabled={!canClick}
+      disabled={disabled}
     >
       {children}
     </button>

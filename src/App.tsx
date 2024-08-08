@@ -36,6 +36,7 @@ function App() {
       >
         {navbarMdDevicesHidden === false && (
           <Overlay
+            className="z-30"
             onClick={() => {
               setNavbarHidden(true);
               setNavbarMdDevicesHidden(true);

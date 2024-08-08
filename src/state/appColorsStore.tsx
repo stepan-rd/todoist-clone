@@ -17,6 +17,9 @@ type AppColorsType = {
   secondaryColorHover: string;
   borderColorFocused: string;
   disabledButtonBg: string;
+  lowPriorityColor: string,
+  mediumPriorityColor: string,
+  highPriorityColor: string,
 };
 
 interface AppColorsStoreType {
@@ -41,6 +44,9 @@ export const useAppColors = create<AppColorsStoreType>((set) => ({
     secondaryColorHover: "#e0e0e0",
     borderColorFocused: "#b5b3b3",
     disabledButtonBg: "#eda59e",
+    lowPriorityColor: "#246fe0",
+    mediumPriorityColor: "#eb8909",
+    highPriorityColor: "#d1453b"
   },
   setAppColors: (val) => set((state) => ({ appColors: val })),
 }));

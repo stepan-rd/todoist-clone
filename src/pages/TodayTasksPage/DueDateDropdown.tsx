@@ -3,6 +3,10 @@ import DatePresetChoice from "./DatePresetChoice";
 import { useState } from "react";
 import { useAddTaskStore } from "@/state/addTaskStore";
 import { OverlayInvisible } from "@/components/OverlayInvisible";
+import { getCurrentDayString } from "@/utils/getCurrentDayString";
+import { getTomorrowDateString } from "@/utils/getTomorrowDateString";
+import { getNextWeekendString } from "@/utils/getNextWeekendString";
+import { getNextWeekString } from "@/utils/getNextWeekString";
 
 const date = new Date().getDate();
 
@@ -87,79 +91,17 @@ const icons = [
 const choices = ["Today", "Tomorrow", "This Weekend", "Next Week"];
 
 type Props = {
-  className: string;
+  className?: string;
+  overlayOnClick: () => void;
+  handleChoiceClick: (...args: any[]) => void;
 };
 
-export default function DueDateDropdown({ className }: Props) {
+export default function DueDateDropdown({
+  className,
+  overlayOnClick,
+  handleChoiceClick,
+}: Props) {
   const { appColors } = useAppColors();
-
-  const {
-    setDueDateBtnValue,
-    setDueDateBtnTextColor,
-    setDueDateDropdownVisible,
-  } = useAddTaskStore();
-
-  const getCurrentDayString = () => {
-    const date = new Date();
-    return date.toLocaleDateString("en-US", { weekday: "long" }).slice(0, 3);
-  };
-
-  const getTomorrowDateString = () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
-    return date.toLocaleDateString("en-US", { weekday: "long" }).slice(0, 3);
-  };
-
-  const formatDate = (date: Date) => {
-    const options = {
-      weekday: "short" as const,
-      day: "2-digit" as const,
-      month: "short" as const,
-    };
-    return date.toLocaleDateString("en-US", options);
-  };
-
-  const getNextWeekendString = () => {
-    const date = new Date();
-    const day = date.getDay();
-    const daysUntilSaturday = 6 - day;
-    date.setDate(date.getDate() + daysUntilSaturday);
-    return formatDate(date);
-  };
-
-  const getNextWeekString = () => {
-    const date = new Date();
-    const day = date.getDay();
-    const daysUntilNextMonday = (8 - day) % 7;
-    date.setDate(date.getDate() + daysUntilNextMonday);
-    return formatDate(date);
-  };
-
-  function handleChoiceClick(choiceName: string) {
-    switch (choiceName) {
-      case "Today":
-        setDueDateBtnValue("Today");
-        setDueDateBtnTextColor("green");
-        break;
-
-      case "Tomorrow":
-        setDueDateBtnValue("Tomorrow");
-        setDueDateBtnTextColor("#ad6200");
-        break;
-
-      case "This Weekend":
-        setDueDateBtnValue(getNextWeekendString());
-        setDueDateBtnTextColor("#246fe0");
-        break;
-
-      case "Next Week":
-        setDueDateBtnValue(getNextWeekString());
-        setDueDateBtnTextColor("#692ec2");
-        break;
-    }
-
-    setDueDateDropdownVisible(false);
-  }
 
   const dateValues = [
     getCurrentDayString(),
@@ -168,11 +110,9 @@ export default function DueDateDropdown({ className }: Props) {
     getNextWeekString(),
   ];
 
-  const [value, setValue] = useState();
-
   return (
     <>
-      <OverlayInvisible onClick={() => setDueDateDropdownVisible(false)} />
+      <OverlayInvisible onClick={overlayOnClick} />
       <div
         className={`rounded-lg shadow-md border pb-2 z-50 ${className}`}
         style={{
@@ -191,7 +131,7 @@ export default function DueDateDropdown({ className }: Props) {
           {choices.map((choice, choiceIndex) => (
             <DatePresetChoice
               svg={icons[choiceIndex]}
-              onClick={() => handleChoiceClick(choice)}
+              onClick={() => handleChoiceClick(choice, choiceIndex)}
               text={choice}
               date={dateValues[choiceIndex]}
             />
