@@ -71,12 +71,7 @@ export function Navbar({}: Props) {
       choiceName: "today",
       choiceSvg: <TodaySvg activeChoice={activeChoice} />,
       choiceText: "Today",
-    },
-    {
-      choiceName: "upcoming",
-      choiceSvg: <UpcomingSvg activeChoice={activeChoice} />,
-      choiceText: "Upcoming",
-    },
+    }
   ];
 
   const handleChoiceClick = (choiceName: string) => {
