@@ -1,11 +1,12 @@
 import { useTasksStore } from "@/state/tasksStore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TaskCard } from "../TodayTasksPage/TaskCard";
 import { useInboxPageStore } from "@/state/inboxPageStore";
 import { useAppColors } from "@/state/appColorsStore";
 import { EditTaskPopup } from "@/components/EditTaskPopup/EditTaskPopup";
 import { AddTaskButton } from "../TodayTasksPage/AddTaskButton";
 import { AddTaskCard } from "@/components/AddTaskCard";
+import { useEditTaskPopupStore } from "@/state/editTaskPopupStore";
 
 type Props = {};
 
@@ -22,6 +23,10 @@ export function InboxPage({}: Props) {
     setEditTaskPopupVisible(true);
     setCurrEditingTaskIndex(taskIndex);
   }
+
+  useEffect(() => {
+    document.title = "Inbox - Todoist"
+  }, [])
 
   return (
     <div className="min-h-screen p-14">
